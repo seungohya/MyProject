@@ -1,0 +1,25 @@
+<!-- search.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Search</title>
+  </head>
+
+  <body>
+    <form action="{% url 'search_results' %}" method="get">
+      <input type="text" name="q" placeholder="Google 검색">
+      <button type="submit">검색</button>
+    </form>
+
+    <!-- 검색 결과를 나타낼 부분 -->
+    <div>
+      {% for result in results %}
+        <p>{{ result }}</p>
+      {% endfor %}
+    </div>
+  </body>
+
+</html>

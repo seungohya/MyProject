@@ -1,0 +1,73 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'map/searchbar.css' %}"> {% endcomment %}
+    <title>Kakao Map Crawl</title>
+  </head>
+
+  <body>
+    <form method="post" id="content">
+      {% csrf_token %}
+      <label for="store_name"></label>
+      <input type="text" name="input" class="input" id="search-input">
+
+      <button class="search" id="submit-btn"></button>
+
+    </form>
+    <div id="react-app-root">
+  {# This is where the React app will be inserted #}
+</div>
+<h2>Kakao Map 결과</h2>
+    {% for kakao_result in kakao_results %}
+      <p>업체 이름:
+        {{ kakao_result.store_name }}</p>
+      <p>카카오맵 평점:
+        {{ kakao_result.grade }}</p>
+      <p>카카오맵 리뷰 개수:
+        {{ kakao_result.review_count }}</p>
+      <p>카카오맵 영업 시간:
+        {{ kakao_result.operating_hours }}</p>
+      {% if kakao_result.detail_url %}
+        <a href="{{ kakao_result.detail_url }}" target="_blank">카카오 리뷰 페이지로 이동</a>
+      {% endif %}
+      <hr>
+    {% endfor %}
+
+    <h2>Naver Map 결과</h2>
+    {% for naver_result in naver_results %}
+      <p>업체 이름:
+        {{ naver_result.detail_name }}</p>
+      <p>네이버지도 평점:
+        {{ naver_result.detail_star_rating }}</p>
+      <p>네이버지도 리뷰 개수:
+        {{ naver_result.review_count }}건</p>
+      <p>네이버지도 영업 시간:
+        {{ naver_result.business_hours }}</p>
+      {% if naver_result.detail_url %}
+        <a href="{{ naver_result.detail_url }}" target="_blank">네이버 리뷰 페이지로 이동</a>
+      {% endif %}
+      <hr>
+    {% endfor %}
+  </body>
+  {% load static %}
+  <script src="{% static 'map/searchbar.js' %}"></script>
+<script>
+  {% comment %} // Load React app into the specified element
+  const reactAppRoot = document.getElementById("react-app-root");
+  const reactApp = document.createElement("div");
+  reactApp.setAttribute("id", "my-react-app");
+  reactAppRoot.appendChild(reactApp);
+
+  // Load React app's JS bundle
+  const script = document.createElement("script");
+  script.src = "{% static 'react_app/js/main.js' %}"; // 리액트 앱의 번들 경로
+  script.async = true;
+  reactApp.appendChild(script); {% endcomment %}
+</script>
+</body>
+</html>
